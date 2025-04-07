@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Responsive Rive Animation</title>
+<style>
+body, html {
+
+    margin: 0;
+    font-size: 0px;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: auto;   /* Allow vertical scrolling */
+
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+canvas {
+    width: 1920px; /* Set canvas width manually */
+    height: 1080px;
+    margin: 0 auto; /* Center the canvas horizontally */
+    display: block; /* Ensure proper centering */
+}
+</style>
+<script src="https://unpkg.com/@rive-app/canvas@latest"></script>
+</head>
+<body>
+<canvas id="riveCanvas"></canvas>
+<div id="widthDisplay"></div>
+<script>
+    let riveInstance;
+    // Initialize Rive
+    riveInstance = new rive.Rive({
+        src: 'steering.riv', // Ensure this file name is correct
+        canvas: document.getElementById('riveCanvas'),
+        autoplay: true,
+        artboard: 'Artboard', // Ensure this artboard name is correct
+        stateMachines: 'State Machine 1', // Ensure this state machine name is correct
+        onLoad: () => {
+            const inputs = riveInstance.stateMachineInputs('State Machine 1'); // Ensure this state machine name is correct
+            // widthNumInput = inputs.find(i => i.name === 'width num'); // Ensure this input name is correct
+            riveInstance.resizeDrawingSurfaceToCanvas();
+
+            // // Update canvas height on load and resize
+            // updateCanvasHeight();
+            // window.onresize = updateCanvasHeight;
+        }
+    });
+</script>
+</body>
+</html>
