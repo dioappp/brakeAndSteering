@@ -1,54 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Responsive Rive Animation</title>
-<style>
-body, html {
-
-    margin: 0;
-    font-size: 0px;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    overflow-y: auto;   /* Allow vertical scrolling */
-
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-canvas {
-    width: 1920px; /* Set canvas width manually */
-    height: 1080px;
-    margin: 0 auto; /* Center the canvas horizontally */
-    display: block; /* Ensure proper centering */
-}
-</style>
-<script src="https://unpkg.com/@rive-app/canvas@latest"></script>
-</head>
-<body>
-<canvas id="riveCanvas"></canvas>
-<div id="widthDisplay"></div>
-<script>
-    let riveInstance;
-    // Initialize Rive
-    riveInstance = new rive.Rive({
-        src: 'steering.riv', // Ensure this file name is correct
-        canvas: document.getElementById('riveCanvas'),
-        autoplay: true,
-        artboard: 'Artboard', // Ensure this artboard name is correct
-        stateMachines: 'State Machine 1', // Ensure this state machine name is correct
-        onLoad: () => {
-            const inputs = riveInstance.stateMachineInputs('State Machine 1'); // Ensure this state machine name is correct
-            // widthNumInput = inputs.find(i => i.name === 'width num'); // Ensure this input name is correct
-            riveInstance.resizeDrawingSurfaceToCanvas();
-
-            // // Update canvas height on load and resize
-            // updateCanvasHeight();
-            // window.onresize = updateCanvasHeight;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steering and Brake System</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
         }
-    });
-</script>
+    </style>
+    <script src="https://unpkg.com/@rive-app/canvas@latest"></script>
+</head>
+
+<body>
+    <canvas style="
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+  " id="rive-canvas"></canvas>
+    <script>
+        // ---------------------------------
+        // The layout of the graphic will adhere to
+        const layout = new rive.Layout({
+            fit: rive.Fit.FitWidth, // Change to: rive.Fit.Contain, or Cover
+            alignment: rive.Alignment.Center,
+        });
+
+        // ---------------------------------
+        // HTML Canvas element to render to
+        const riveCanvas = document.getElementById("rive-canvas");
+
+        // ---------------------------------
+        // Re-adjust the rendering surface if the window resizes
+        window.addEventListener(
+            "resize",
+            () => {
+                riveInstance.resizeDrawingSurfaceToCanvas();
+            },
+            false
+        );
+
+        // Initialize Rive
+        const riveInstance = new rive.Rive({
+            src: 'steering.riv', // Ensure this file name is correct
+            canvas: riveCanvas,
+            autoplay: true,
+            artboard: 'Artboard', // Ensure this artboard name is correct
+            stateMachines: 'State Machine 1', // Ensure this state machine name is correct
+            onLoad: () => {
+                const inputs = riveInstance.stateMachineInputs('State Machine 1'); // Ensure this state machine name is correct
+                riveInstance.resizeDrawingSurfaceToCanvas();
+            }
+        });
+    </script>
 </body>
+
 </html>
