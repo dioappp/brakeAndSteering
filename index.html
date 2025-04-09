@@ -11,6 +11,31 @@
             margin: 0;
             padding: 0;
         }
+
+        .controls {
+            position: fixed;
+            top: 80%;
+            right: 20px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
     </style>
     <script src="https://unpkg.com/@rive-app/canvas@latest"></script>
 </head>
@@ -22,40 +47,40 @@
     width: 100%;
     background-color: rgb(255, 255, 255);
   " id="rive-canvas"></canvas>
-    <script>
-        // ---------------------------------
-        // The layout of the graphic will adhere to
-        const layout = new rive.Layout({
-            fit: rive.Fit.FitWidth, // Change to: rive.Fit.Contain, or Cover
-            alignment: rive.Alignment.Center,
-        });
 
-        // ---------------------------------
-        // HTML Canvas element to render to
+    <div class="controls">
+        <button onclick="play()">▶</button>
+        <button onclick="pause()">⏸</button>
+    </div>
+
+    <script>
         const riveCanvas = document.getElementById("rive-canvas");
 
-        // ---------------------------------
-        // Re-adjust the rendering surface if the window resizes
-        window.addEventListener(
-            "resize",
-            () => {
-                riveInstance.resizeDrawingSurfaceToCanvas();
-            },
-            false
-        );
+        let riveInstance;
+        let inputs = [];
 
-        // Initialize Rive
-        const riveInstance = new rive.Rive({
-            src: 'steering.riv', // Ensure this file name is correct
+        window.addEventListener("resize", () => {
+            if (riveInstance) riveInstance.resizeDrawingSurfaceToCanvas();
+        });
+
+        riveInstance = new rive.Rive({
+            src: 'steering.riv',
             canvas: riveCanvas,
             autoplay: true,
-            artboard: 'Artboard', // Ensure this artboard name is correct
-            stateMachines: 'State Machine 1', // Ensure this state machine name is correct
+            artboard: 'Artboard',
+            stateMachines: 'State Machine 1',
             onLoad: () => {
-                const inputs = riveInstance.stateMachineInputs('State Machine 1'); // Ensure this state machine name is correct
                 riveInstance.resizeDrawingSurfaceToCanvas();
             }
         });
+
+        function play() {
+            riveInstance.play();
+        }
+
+        function pause() {
+            riveInstance.pause();
+        }
     </script>
 </body>
 
