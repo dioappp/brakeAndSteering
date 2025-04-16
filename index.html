@@ -58,6 +58,7 @@
 
         let riveInstance;
         let inputs = [];
+        let isPlaying = true; // Track play/pause state
 
         window.addEventListener("resize", () => {
             if (riveInstance) riveInstance.resizeDrawingSurfaceToCanvas();
@@ -76,12 +77,23 @@
 
         function play() {
             riveInstance.play();
+            isPlaying = true;
         }
 
         function pause() {
             riveInstance.pause();
+            isPlaying = false;
         }
+
+        // Add spacebar event listener
+        window.addEventListener("keydown", (event) => {
+            if (event.code === "Space") {
+                event.preventDefault(); // Prevent page scroll
+                isPlaying ? pause() : play();
+            }
+        });
     </script>
+
 </body>
 
 </html>
